@@ -1,44 +1,34 @@
-class Solution {
-
-    public int maxPalindromes(String s, int k) {
-
-        int n = s.length();
-
-        int[] dp = new int[n + 1];
-
-        for (int i = 0; i < n; i++) {
-
-            // Skip this character
-            dp[i + 1] = Math.max(dp[i + 1], dp[i]);
-
-            // Try palindrome starting at i
-            for (int j = i + k - 1; j < n; j++) {
-
-                if (isPalindrome(s, i, j)) {
-
-                    dp[j + 1] =
-                        Math.max(dp[j + 1], dp[i] + 1);
-
-                    break;
-                }
-            }
-        }
-
-        return dp[n];
-    }
-
-
-    private boolean isPalindrome(String s, int l, int r) {
-
-        while (l < r) {
-
-            if (s.charAt(l) != s.charAt(r))
-                return false;
-
-            l++;
-            r--;
-        }
-
-        return true;
-    }
+class Solution { 
+ 
+    public int maxPalindromes(String s, int k) { 
+        int n = s.length(); 
+        int ans = 0, 
+            start = 0; 
+ 
+        for (int r = k - 1; r < n; ++r) { 
+            int l = r - k + 1; 
+            if (l >= start && check(s, l, r)) { 
+                ++ans; 
+                start = r + 1; 
+                continue; 
+            } 
+ 
+            l = r - k; 
+            if (l >= start && check(s, l, r)) { 
+                ++ans; 
+                start = r + 1; 
+            } 
+        } 
+ 
+        return ans; 
+    } 
+ 
+    private boolean check(String s, int l, int r) { 
+        while (l < r) { 
+            if (s.charAt(l++) != s.charAt(r--)) { 
+                return false; 
+            } 
+        } 
+        return true; 
+    } 
 }
